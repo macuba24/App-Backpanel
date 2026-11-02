@@ -28,7 +28,7 @@ export function ConnectedAppCard({
   const t = useT();
   const linked = activeAppLink(slug, connection);
   const linkedUrl = linked?.url ?? "";
-  const siteUrl = connection?.url || websiteUrl;
+  const siteUrl = websiteUrl;
 
   useEffect(() => {
     if (!linkedUrl) return;

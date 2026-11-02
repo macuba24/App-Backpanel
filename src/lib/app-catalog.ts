@@ -22,7 +22,7 @@ type KnownApp = {
 /** Customer apps in this shop family. A link must match one of these. Nothing else is connected. */
 const KNOWN_APPS: KnownApp[] = [
   { slug: "lahr", name: "LAHR SCHUHE", hosts: ["schuh-frank.de"], pathIncludes: ["lahr-schuhe"] },
-  { slug: "schmahl", name: "Schmahl GmbH", hosts: ["gartentechnik-koblenz.de"] },
+  { slug: "schmahl", name: "Schmahl GmbH", hosts: ["schmahl-bonus-app.onrender.com", "gartentechnik-koblenz.de"] },
   { slug: "de-filippo", name: "DE FILIPPO uomo", hosts: ["defilippo-uomo.de"] },
   { slug: "zweirad-sturm", name: "Zweirad Sturm GmbH", hosts: ["ktm-sturm.de"] },
   { slug: "le-marche", name: "Le Marché", hosts: ["le-marche-koblenz.de"] },
@@ -105,8 +105,10 @@ export function recognizeAppLink(input: string): LinkDecision {
 }
 
 export function activeAppLink(slug: string, saved: SavedAppLink | null): { name: string; url: string } | null {
+  const app = linkedApp(saved?.slug || slug);
+  if (app) return app;
   if (saved) return { name: saved.name, url: saved.url };
-  return linkedApp(slug);
+  return null;
 }
 
 export function readSavedAppLink(config: {

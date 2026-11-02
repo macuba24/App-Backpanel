@@ -1,5 +1,6 @@
 import type { PanelTenant } from "@/lib/panel-context";
 import type { SavedAppLink } from "@/lib/app-catalog";
+import { shopHomepage } from "@/lib/shop-urls";
 import { defaultActiveModules } from "@/modules/defaults";
 import { defaultFactory, type FactoryConfig } from "@/modules/factory";
 
@@ -29,7 +30,7 @@ export function connectedIdentity(account: PanelTenant): {
   return {
     name: link.name,
     slug: link.slug,
-    websiteUrl: link.url,
+    websiteUrl: shopHomepage(link.slug) || link.url,
     preview: pinWebsite(preview, link),
   };
 }
@@ -64,7 +65,7 @@ function pinWebsite(tenant: PanelTenant, link: SavedAppLink): PanelTenant {
     connection: link,
     factory: {
       ...tenant.factory,
-      homepage: { enabled: true, label: "Homepage", url: link.url },
+      homepage: { enabled: true, label: "Homepage", url: shopHomepage(link.slug) || link.url },
     },
   };
 }
