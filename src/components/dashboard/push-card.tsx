@@ -15,6 +15,22 @@ import type { ActiveModulesConfig, ModuleKey } from "@/modules/schema";
 
 const category = categoryRegistry[3];
 
+const pushFigures = [
+  { label: "Osterhase", labelEn: "Easter bunny", mark: "🐰" },
+  { label: "Osterei", labelEn: "Easter egg", mark: "🥚" },
+  { label: "Weihnachtsmann", labelEn: "Santa", mark: "🎅" },
+  { label: "Tannenbaum", labelEn: "Christmas tree", mark: "🎄" },
+  { label: "Schneemann", labelEn: "Snowman", mark: "⛄" },
+  { label: "Geschenk", labelEn: "Gift", mark: "🎁" },
+  { label: "Herz", labelEn: "Heart", mark: "❤️" },
+  { label: "Kürbis", labelEn: "Pumpkin", mark: "🎃" },
+] as const;
+
+function withFigure(message: string, mark: string) {
+  const trimmed = message.replace(/\s+$/, "");
+  return trimmed.length === 0 ? mark : `${trimmed} ${mark}`;
+}
+
 type CardProps = {
   config: ActiveModulesConfig;
   disabled: boolean;
@@ -85,6 +101,28 @@ export function PushCard({ config, disabled, sending, sendingNow, onPatch, onSav
                   disabled={busy}
                   onChange={(message) => onPatch("pushCenter", { ...config.pushCenter, message })}
                 />
+                <div className="grid gap-2">
+                  <p className="text-sm font-medium">{t("Figur einfügen", "Insert a figure")}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {pushFigures.map((figure) => (
+                      <Button
+                        key={figure.mark}
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        disabled={busy}
+                        onClick={() =>
+                          onPatch("pushCenter", {
+                            ...config.pushCenter,
+                            message: withFigure(config.pushCenter.message, figure.mark),
+                          })
+                        }
+                      >
+                        {figure.mark} {t(figure.label, figure.labelEn)}
+                      </Button>
+                    ))}
+                  </div>
+                </div>
                 <TextField
                   id="push-link"
                   label={t("Deep-Link", "Deep link")}
