@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Retailer account. One row controls one customer PWA.
+model Tenant {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String   @unique
+  apiKey    String   @unique
+  createdAt DateTime @default(now())
+
+  appConfig AppConfig?
+  users     User[]
+  receiptClaims ReceiptClaim[]
+  orderRequests OrderRequest[]
+  pushSubscriptions PushSubscription[]
+
+  @@map("Tenants")
+}
+
+/// One login belongs to exactly one tenant, and therefore to that tenant's single app.
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  name         String   @default("")
+  email        String   @unique
+  passwordHash String
+  tenantId     String   @db.Uuid
+  createdAt    DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("Users")
+}
+
+/// Branding and the structured module configuration for a tenant.
+/// `activeModules` stores the full ActiveModulesConfig JSON object.
+model AppConfig {
+  id             String   @id @default(uuid()) @db.Uuid
+  tenantId       String   @unique @db.Uuid
+  /// Display name of this tenant's only app. Uniqueness of tenantId keeps the 1:1 link.
+  name           String   @default("App")
+  primaryColor   String
+  logoUrl        String?
+  welcomeMessage String   @db.Text
+  activeModules  Json
+  /// Delivered baseline of the coupled app. The merchant can edit or switch parts off.
+  factory        Json?
+  /// App chosen in the connection tool. Empty until a QR code or link is recognized.
+  connectedSlug  String?
+  connectedName  String?
+  connectedUrl   String?
+  updatedAt      DateTime @updatedAt
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@map("AppConfigs")
+}
+
+/// A receipt image hash already counted for this tenant. The same hash cannot be claimed twice.
+model ReceiptClaim {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @db.Uuid
+  hash      String
+  createdAt DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@unique([tenantId, hash])
+  @@index([tenantId])
+  @@map("ReceiptClaims")
+}
+
+/// A customer order slip. Card data is never stored. Payment stays with the shop.
+model OrderRequest {
+  id               String   @id @default(uuid()) @db.Uuid
+  tenantId         String   @db.Uuid
+  lines            Json
+  fulfillment      String
+  deliveryAddress  String   @default("") @db.Text
+  totalCents       Int
+  paymentLabel     String
+  termsAccepted    Boolean
+  createdAt        DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId, createdAt])
+  @@map("OrderRequests")
+}
+
+/// A phone that allowed notifications. The endpoint is the browser push address, not a phone number.
+model PushSubscription {
+  id        String   @id @default(uuid()) @db.Uuid
+  tenantId  String   @db.Uuid
+  endpoint  String   @unique
+  p256dh    String
+  auth      String
+  createdAt DateTime @default(now())
+
+  tenant Tenant @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+
+  @@index([tenantId])
+  @@map("PushSubscriptions")
+}
