@@ -57,12 +57,6 @@ export const defaultActiveModules: ActiveModulesConfig = {
     visitTarget: 5,
     rewardText: "Gratis Getränk nach 5 Besuchen",
   },
-  directFeedback: {
-    enabled: false,
-    question: "Wie zufrieden waren Sie mit Ihrem Besuch?",
-    notifyEmail: "",
-    googleReviewUrl: "",
-  },
   quickPoll: {
     enabled: false,
     question: "Welche Kategorie interessiert Sie am meisten?",
@@ -159,12 +153,6 @@ export const demoActiveModules: ActiveModulesConfig = activeModulesSchema.parse(
     enabled: false,
     visitTarget: 6,
     rewardText: "Nach 6 Besuchen: 20 € Gutschein",
-  },
-  directFeedback: {
-    enabled: true,
-    question: "Wie hat Ihnen der Besuch in unserem Geschäft gefallen?",
-    notifyEmail: "service@schmahl.example",
-    googleReviewUrl: "https://search.google.com/local/writereview?placeid=ChIJschmahl",
   },
   quickPoll: {
     enabled: false,

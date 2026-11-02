@@ -4,7 +4,6 @@ import {
   CalendarDays,
   Disc3,
   Flag,
-  MessageSquareHeart,
   ListChecks,
   Snowflake,
   Stamp,
@@ -45,12 +44,6 @@ export const moduleRegistry = {
     description: "Belohnung nach einer festen Anzahl von Besuchen.",
     category: "gamification",
     icon: Flag,
-  },
-  directFeedback: {
-    label: "Direct Feedback",
-    description: "Feste 5-Sterne-Bewertung mit Hinweis bei schwacher und starker Wertung.",
-    category: "dialog",
-    icon: MessageSquareHeart,
   },
   quickPoll: {
     label: "Quick-Polls",
@@ -126,8 +119,8 @@ export const categoryRegistry = [
   {
     id: "dialog",
     title: "Dialog & Auswertung",
-    description: "Rückmeldungen und kurze Umfragen aus der Kunden-App.",
-    keys: ["directFeedback", "quickPoll"],
+    description: "Kurze Umfragen aus der Kunden-App.",
+    keys: ["quickPoll"],
   },
   {
     id: "marketing",

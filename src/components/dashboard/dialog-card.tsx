@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { AreaField, SwitchRow, TextField } from "@/components/dashboard/fields";
+import { AreaField, SwitchRow } from "@/components/dashboard/fields";
 import { moduleAnchor } from "@/components/dashboard/module-anchor";
 import { useT } from "@/lib/locale";
 import { categoryRegistry } from "@/modules/registry";
@@ -26,7 +25,7 @@ export function DialogCard({ config, disabled, onPatch, onSave }: CardProps) {
     <Card>
       <CardHeader>
         <CardTitle>{t(category.title, "Dialog and insights")}</CardTitle>
-        <CardDescription>{t(category.description, "Feedback and short polls from the customer app.")}</CardDescription>
+        <CardDescription>{t(category.description, "Short polls from the customer app.")}</CardDescription>
       </CardHeader>
       <form
         onSubmit={(event) => {
@@ -35,50 +34,6 @@ export function DialogCard({ config, disabled, onPatch, onSave }: CardProps) {
         }}
       >
         <CardContent className="grid gap-8">
-          <section {...moduleAnchor("directFeedback", `grid gap-4 rounded-xl border-2 border-black p-4 ${config.directFeedback.enabled ? "feature-integrated" : ""}`)}>
-            <SwitchRow
-              id="feedback-enabled"
-              label={t("Direct Feedback", "Direct feedback")}
-              description={t("Die Bewertung in der App ist fest auf 5 Sterne eingestellt.", "The rating in the app is fixed at 5 stars.")}
-              checked={config.directFeedback.enabled}
-              disabled={disabled}
-              onCheckedChange={(enabled) => onPatch("directFeedback", { ...config.directFeedback, enabled })}
-            />
-            {config.directFeedback.enabled ? (
-              <div className="grid gap-4">
-                <AreaField
-                  id="feedback-question"
-                  label={t("Fragetext", "Question")}
-                  value={config.directFeedback.question}
-                  disabled={disabled}
-                  onChange={(question) => onPatch("directFeedback", { ...config.directFeedback, question })}
-                />
-                <p className="text-sm text-muted-foreground">
-                  {t("1–3 Sterne lösen die Benachrichtigung aus. 5 Sterne öffnen die Google-Bewertung. Ein anderer Fragetyp wird nicht angeboten.", "1–3 stars trigger the notification. 5 stars open the Google review. No other question type is offered.")}
-                </p>
-                <TextField
-                  id="feedback-email"
-                  label={t("Benachrichtigungs-E-Mail bei schlechter Bewertung (1–3)", "Notification email for a low rating (1–3)")}
-                  type="email"
-                  value={config.directFeedback.notifyEmail}
-                  disabled={disabled}
-                  onChange={(notifyEmail) => onPatch("directFeedback", { ...config.directFeedback, notifyEmail })}
-                />
-                <TextField
-                  id="feedback-google"
-                  label={t("Google-Bewertungs-URL bei 5 Sternen", "Google review URL at 5 stars")}
-                  type="url"
-                  placeholder="https://"
-                  value={config.directFeedback.googleReviewUrl}
-                  disabled={disabled}
-                  onChange={(googleReviewUrl) => onPatch("directFeedback", { ...config.directFeedback, googleReviewUrl })}
-                />
-              </div>
-            ) : null}
-          </section>
-
-          <Separator />
-
           <section {...moduleAnchor("quickPoll", `grid gap-4 rounded-xl border-2 border-black p-4 ${config.quickPoll.enabled ? "feature-integrated" : ""}`)}>
             <SwitchRow
               id="poll-enabled"

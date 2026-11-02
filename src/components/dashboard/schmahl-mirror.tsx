@@ -106,9 +106,6 @@ function featureBody(key: ModuleKey, modules: PanelTenant["modules"]) {
           ))}
         </div>
       );
-    case "directFeedback":
-      if (!modules.directFeedback.enabled) return null;
-      return <Benefit title="Ihre Meinung" body={modules.directFeedback.question} />;
     case "quickPoll":
       if (!modules.quickPoll.enabled) return null;
       return <Benefit title={modules.quickPoll.question || "Umfrage"} body={modules.quickPoll.options.join(" · ")} />;

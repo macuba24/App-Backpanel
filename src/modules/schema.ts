@@ -59,13 +59,6 @@ export const challengePassSchema = z.object({
   rewardText: z.string().trim().max(500, "Belohnungstext ist zu lang."),
 });
 
-export const directFeedbackSchema = z.object({
-  enabled: z.boolean(),
-  question: z.string().trim().max(500, "Fragetext ist zu lang."),
-  notifyEmail: optionalEmail,
-  googleReviewUrl: optionalUrl,
-});
-
 export const quickPollSchema = z.object({
   enabled: z.boolean(),
   question: z.string().trim().max(500, "Umfragefrage ist zu lang."),
@@ -273,7 +266,6 @@ export const activeModulesSchema = z.object({
   stampCard: stampCardSchema,
   wheel: wheelSchema,
   challengePass: challengePassSchema,
-  directFeedback: directFeedbackSchema,
   quickPoll: quickPollSchema,
   birthdayGreeting: birthdayGreetingSchema,
   seasonalGreeting: seasonalGreetingSchema,
@@ -303,7 +295,6 @@ export type DesignInput = z.infer<typeof designSchema>;
 export type StampCardConfig = z.infer<typeof stampCardSchema>;
 export type WheelConfig = z.infer<typeof wheelSchema>;
 export type ChallengePassConfig = z.infer<typeof challengePassSchema>;
-export type DirectFeedbackConfig = z.infer<typeof directFeedbackSchema>;
 export type QuickPollConfig = z.infer<typeof quickPollSchema>;
 export type BirthdayGreetingConfig = z.infer<typeof birthdayGreetingSchema>;
 export type SeasonalGreetingConfig = z.infer<typeof seasonalGreetingSchema>;
