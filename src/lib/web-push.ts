@@ -59,6 +59,7 @@ export async function deliverPush(
       await webpush.sendNotification(
         { endpoint: device.endpoint, keys: { p256dh: device.p256dh, auth: device.auth } },
         body,
+        { TTL: 12 * 60 * 60, urgency: "high" },
       );
       sent += 1;
     } catch (error) {

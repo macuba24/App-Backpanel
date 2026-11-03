@@ -23,6 +23,8 @@ const pushFigures = [
   { label: "Schneemann", labelEn: "Snowman", mark: "⛄" },
   { label: "Geschenk", labelEn: "Gift", mark: "🎁" },
   { label: "Herz", labelEn: "Heart", mark: "❤️" },
+  { label: "Sekt", labelEn: "Sparkling wine", mark: "🥂" },
+  { label: "Feuerwerk", labelEn: "Fireworks", mark: "🎆" },
   { label: "Kürbis", labelEn: "Pumpkin", mark: "🎃" },
 ] as const;
 
